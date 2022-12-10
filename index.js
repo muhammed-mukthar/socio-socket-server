@@ -1,5 +1,6 @@
 const dotenv=require('dotenv')
 dotenv.config()
+console.log(process.env.CORS_VARS.split(", "));
 
 const io=require('socket.io')(8800,{
     cors:{
