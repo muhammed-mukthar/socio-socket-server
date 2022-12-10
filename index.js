@@ -4,7 +4,9 @@ console.log(process.env.CORS_VARS.split(", "));
 
 const io=require('socket.io')(8800,{
     cors:{
-        origin:process.env.CORS_VARS.split(", ")
+        origin:process.env.CORS_VARS.split(", "),
+        methods: "GET,PUT,POST,DELETE"
+      
     }
 })
 
