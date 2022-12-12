@@ -32,8 +32,6 @@ socket.on('new-user-add',(newUserId)=>{
     console.log(activeUsers,"activeUsers");
     const { receiverId } = data;
     const user = activeUsers.find((user) => user.userId === receiverId);
-
-    console.log("Data: ", data)
     if (user) {
       io.to(user.socketId).emit("recieve-message", data);
     }
@@ -44,14 +42,8 @@ socket.on('new-user-add',(newUserId)=>{
     return activeUsers.find((user) => user.userId === userId);
   };
 
-  //send notification
-  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
-    const receiver = getUser(receiverName);
-    io.to(receiver.socketId).emit("getNotification", {
-      senderName,
-      type,
-    });
-  });
+
+
 //sendtext
   socket.on("sendText", ({ senderName, receiverName, text }) => {
     const receiver = getUser(receiverName);
@@ -61,6 +53,19 @@ socket.on('new-user-add',(newUserId)=>{
     });
   });
 
+   // notifications
+
+  // SEND NOTIFICATION 
+  socket.on("send-notification",(data)=>{
+    console.log(data,'is it ccoming from');
+    const {recieverId,senderId,desc} = data
+    const reciever = activeUsers.find((user)=>user.userId === recieverId)
+    console.log(reciever,'noti reciever'); 
+    io.to(reciever?.socketId).emit("getNotification",{ 
+        senderId,
+        desc,
+    }) 
+})
 //when disconnect
 
 socket.on('disconnect',()=>{
